@@ -1,7 +1,7 @@
 // git.rs
 
+use std::io::{self, BufRead, Write};
 use std::process::Command;
-use std::io::{self, Write};
 
 pub fn is_git_installed() -> bool {
     let output = Command::new("git")
@@ -33,17 +33,29 @@ pub fn check_git_status(path: &std::path::Path) {
     if !output.status.success() {
         println!("Failed to execute git status");
     } else {
-        let mut input = String::new();
-        println!("Do you want to add, commit and push changes? (y/n)");
-        io::stdout().flush().unwrap();
-        io::stdin().read_line(&mut input).expect("Failed to read input");
-        if input.trim() == "y" {
-            add_commit_push(path);
-        } 
+        match output.stdout.lines().any(|line| line.unwrap().contains("clean")){
+            true => println!(
+                "****************************************************************\nRepository {} is clean.\n****************************************************************",
+                path.display()
+            ),
+            false => {
+                let mut input = String::new();
+                println!("Do you want to add, commit and push changes? (y/n)");
+                io::stdout().flush().unwrap();
+                io::stdin()
+                    .read_line(&mut input)
+                    .expect("Failed to read input");
+                if input.trim() == "y" {
+                    println!("*************************************************************");
+                    add_commit_push(path);
+                    println!("**************************************************************")
+                }
+            }
+        }
     }
 }
 
-pub fn add_commit_push(path: &std::path::Path){
+pub fn add_commit_push(path: &std::path::Path) {
     let output = Command::new("git")
         .args(&["add", "."])
         .current_dir(path)

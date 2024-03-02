@@ -12,7 +12,7 @@ pub fn scan_folder(root_folder: &str){
                 println!("Scanning repository: {}", path.display());
                 super::git::check_git_status(path);
             }
-            if let Ok(entries) = path.read_dir() {
+            else if let Ok(entries) = path.read_dir() {
                 for entry in entries {
                     if let Ok(entry) = entry {
                         if let Some(name) = entry.file_name().to_str() {
