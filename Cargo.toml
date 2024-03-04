@@ -2,7 +2,16 @@
 name = "git_status"
 version = "0.1.0"
 edition = "2021"
+authors = ["Prince Mbeah Essilfie <mbeahessilfieprince@gmail.com>"]
+license = "MIT OR Apache-2.0"
+description = "A tool to git status automation"
+readme = "README.md"
+homepage = "https://github.com/Kratosgado/git_status"
+repository = "https://github.com/Kratosgado/git_status"
+keywords = ["cli", "search", "git"]
+categories = ["command-line-utilities"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+colored = "2.1.0"
